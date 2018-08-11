@@ -15,7 +15,7 @@ def P(text, pbox):
         text_block = padded_text[start_positon : end_positon]
         result.append(P_block(text_block))
 
-    result_string = "|".join(result)
+    result_string = "".join(result)
     return result_string
 
 def P_block(text):
