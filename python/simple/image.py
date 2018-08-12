@@ -5,7 +5,8 @@ import numpy as np
 secret = [123,28,5,234,71,230,59]
 pbox = [5, 1, 3, 7, 0, 6, 2, 4]
 
-def P(text, pbox):
+def P(img, pbox):
+    text = img.copy()
     block_size = len(pbox)
 
     # repeat the operation for each block
@@ -14,14 +15,16 @@ def P(text, pbox):
     for i in range(num_blocks):
         start_positon = i*block_size
         P_swap(text, start_positon, block_size)
-
+    return text
+    
 def P_swap(text, st_pos, block_size):
     shuffle = [ text[st_pos + p] for p in pbox ]
     for i in range(block_size):
         text[st_pos + i] = shuffle[i]
 
 # xor
-def XORACC(text, sec_init):    
+def XORACC(img, sec_init):    
+    text = img.copy()
     secret_size = len(sec_init)
 
     secret = sec_init.copy()
@@ -34,9 +37,11 @@ def XORACC(text, sec_init):
         # update secret 
         acc = (acc + ch) % 256
         secret[i % secret_size] = secret[i % secret_size] ^ acc
+    return text
 
 # xor
-def XOR(text, secret):    
+def XOR(img, secret):    
+    text = img.copy()
     secret_size = len(secret)
 
     for i in range(len(text)):
@@ -44,33 +49,26 @@ def XOR(text, secret):
         key = secret[i % secret_size]
         xor_result = ch ^ key
         text[i] = xor_result
+    return text
 
-def CAESAR(text):
+def CAESAR(img):
+    text = img.copy()
     for i in range(len(text)):
-        text[i] = ( text[i] + 100 ) % 256
+        text[i] = ( text[i] + 50 ) % 256
+    return text
 
 # image loader
 im = Image.open("img.jpg")
 ab = np.asarray(im)
-ar = ab.copy()
+b = ab.flatten()
 
-# gray scale
-# for row in ar:
-#     for col in row:
-#         avg = (int(col[0]) + int(col[1]) + int(col[2])) // 3
-#         col[0] = col[1] = col[2] = avg
+def save(b, name):
+    size = ab.shape
+    res = b.reshape(size)
+    im2 = Image.fromarray(res)
+    im2.save(name + ".jpg", "JPEG")
 
-b = ar.flatten()
-
-# CAESAR(b)
-# XOR(b, secret)
-XORACC(b, secret)
-# P(b, pbox)
-
-size = ar.shape
-res = b.reshape(size)
-
-im2 = Image.fromarray(res)
-im2.save("bin/out.jpg", "JPEG")
-
-
+save(CAESAR(b), "bin/caesar")
+save(XOR(b, secret), "bin/xor")
+save(XORACC(b, secret), "bin/xoracc")
+save(P(b, pbox), "bin/perm")
