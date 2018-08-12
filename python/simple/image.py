@@ -71,6 +71,6 @@ size = ar.shape
 res = b.reshape(size)
 
 im2 = Image.fromarray(res)
-im2.save("out.jpg", "JPEG")
+im2.save("bin/out.jpg", "JPEG")
 
 
