@@ -93,7 +93,31 @@ a distribuição dos bits.
 14, 6, 61, 53, 45, 37, 29,
 21, 13, 5, 28, 20, 12, 4
 
+**************************************
 
-
+paradox?
 size of key = memorized = smaller as possible
+
+
+***************************************
+
+
+AES Advanced Encryption Standard
+
+1997 AES by NIST
+
+Usages:
+* Encryption
+* Stream Cipher
+* PRNG
+* Hash Function
+* MAC
+
+
+Block Cipher - Modes of Operation
+
+- ECB
+- CBC (block cipher)
+- OFB (stream cipher)
+
 
