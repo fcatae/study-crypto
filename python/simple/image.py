@@ -1,12 +1,25 @@
 from PIL import Image
 import numpy as np
 import pyDes
+import random
+
 des = pyDes.des('secretke')
 #des = pyDes.des('secretke', pyDes.CBC, "\31\1\20\7\100\20\45\15")
 
 # secret
 secret = [123,28,5,234,71,230,59]
 pbox = [5, 1, 3, 7, 0, 6, 2, 4]
+sbox = list(range(0, 255))
+random.shuffle(sbox)
+
+def SUBST(img):
+    print(sbox)
+
+    text = img.copy()
+    for i in range(len(text)):
+        text[i] = sbox[text[i]-1]
+
+    return text
 
 def DES(img):    
     res = des.encrypt(b.tobytes())
@@ -76,8 +89,10 @@ def save(b, name):
     im2 = Image.fromarray(res)
     im2.save(name + ".jpg", "JPEG")
 
+
 # save(b, "bin/plain")
-save(DES(b), "bin/des")
+save(SUBST(b), "bin/subst")
+# save(DES(b), "bin/des")
 # save(CAESAR(b), "bin/caesar")
 # save(XOR(b, secret), "bin/xor")
 # save(XORACC(b, secret), "bin/xoracc")
